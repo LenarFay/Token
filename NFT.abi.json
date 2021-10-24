@@ -17,35 +17,26 @@
 				{"name":"power","type":"uint256"}
 			],
 			"outputs": [
-				{"name":"value0","type":"string"}
+				{"name":"Id","type":"uint256"}
 			]
 		},
 		{
-			"name": "getTokenOwner",
-			"inputs": [
-				{"name":"name","type":"string"}
-			],
-			"outputs": [
-				{"name":"value0","type":"uint256"}
-			]
-		},
-		{
-			"name": "getTokenIngo",
-			"inputs": [
-				{"name":"tokenId","type":"uint256"}
-			],
-			"outputs": [
-				{"name":"tokenName","type":"string"},
-				{"name":"tokenPower","type":"uint256"}
-			]
-		},
-		{
-			"name": "changeOwner",
+			"name": "sell",
 			"inputs": [
 				{"name":"name","type":"string"},
-				{"name":"pubKeyOfNewOwner","type":"uint256"}
+				{"name":"Id","type":"uint256"},
+				{"name":"cost","type":"uint256"}
 			],
 			"outputs": [
+				{"components":[{"name":"name","type":"string"},{"name":"power","type":"uint256"},{"name":"cost","type":"uint256"}],"name":"value0","type":"tuple"}
+			]
+		},
+		{
+			"name": "getTokens",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"string"},{"name":"power","type":"uint256"},{"name":"cost","type":"uint256"}],"name":"value0","type":"tuple[]"}
 			]
 		}
 	],
@@ -57,7 +48,9 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"components":[{"name":"name","type":"string"},{"name":"power","type":"uint256"}],"name":"tokenArr","type":"tuple[]"},
-		{"name":"tokenToOwner","type":"optional(cell)"}
+		{"components":[{"name":"name","type":"string"},{"name":"power","type":"uint256"},{"name":"cost","type":"uint256"}],"name":"tokenArr","type":"tuple[]"},
+		{"name":"tokenOwner","type":"optional(cell)"},
+		{"name":"tokenCost","type":"optional(cell)"},
+		{"components":[{"name":"name","type":"string"},{"name":"power","type":"uint256"},{"name":"cost","type":"uint256"}],"name":"tokenId","type":"map(uint256,tuple)"}
 	]
 }

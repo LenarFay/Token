@@ -13,51 +13,47 @@ contract NFT {
     struct Token {
         string name;
         uint power;
+        uint cost;
     }
-
+    
     Token[] tokenArr;
-    mapping (string=>uint) tokenToOwner;
-    mapping (string=>uint) tokenCost;
+    mapping (string => uint) tokenOwner;
+    mapping (string => uint) tokenCost;
+    mapping (uint => Token) tokenId;
 
-    function createToken (string name, uint power) public returns (string) {
+    function createToken (string name, uint power) public returns (uint Id) {
         tvm.accept();
-        tokenToOwner[name] = msg.pubkey();
-        if (tokenToOwner.exists(name) == false) tokenArr.push(Token(name,power));
-        else return ("Error. Token with the same name already exists");
+        require (tokenOwner.exists(name) == false, 101);
+        tokenArr.push (Token (name, power, 0) );
+        tokenOwner[name] = msg.pubkey();
+        uint Id = tokenArr.length;
+        tokenId[Id] = Token (name, power, 0);
+        return Id;
+        
+       
        
     }
 
-    function createCost (string name, uint cost) public returns (Token) {
+    function sell (string name, uint Id, uint cost) public returns ( Token ){
         tvm.accept();
-        require(msg.pubkey() == tokenToOwner[name], 101);
+        require (msg.pubkey() == tokenOwner[name], 101);
+        tokenId[Id].cost = cost;
         tokenCost[name] = cost;
-
-
     }
 
-
-
-
-
-    function getTokenOwner(string name) public view returns (uint) {
-    
-        return tokenToOwner[name];
-    }
-
-    function getTokenIngo(uint tokenId) public view returns (string tokenName, uint tokenPower){
-        tokenName = tokenArr[tokenId].name;
-        tokenPower = tokenArr[tokenId].power;
-
-    }
-    
-    function changeOwner(string name,uint pubKeyOfNewOwner) public {
-        require(msg.pubkey() == tokenToOwner[name], 101);
+    function getTokens () public returns (Token[]) {
         tvm.accept();
-        tokenToOwner[name] = pubKeyOfNewOwner;
+        return tokenArr;
+
 
 
     }
 
+
+
+
+
+    
     
 
     
